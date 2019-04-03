@@ -1,0 +1,24 @@
+DELIMITER //
+
+CREATE TRIGGER del_cascade_from_customer
+BEFORE DELETE
+   ON CUSTOMER FOR EACH ROW
+
+BEGIN
+	-- ADDRESS PHONE HISTORY 
+    DELETE ADDRESS
+    FROM ADDRESS
+	WHERE ADDRESS.address_ID = NEW.customer_ID;
+    
+	DELETE PHONE_NO
+    FROM PHONE_NO
+	WHERE PHONE_NO.phone_ID = NEW.customer_ID;
+    
+    DELETE HISTORY
+    FROM HISTORY
+	WHERE HISTORY.history_ID = NEW.customer_ID;
+
+
+END //
+
+delimiter ;
